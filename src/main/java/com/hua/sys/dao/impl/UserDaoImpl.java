@@ -4,6 +4,7 @@ import com.hua.sys.JdbcTemplateUtils;
 import com.hua.sys.dao.UserDao;
 import com.hua.sys.entity.User;
 import org.apache.shiro.util.CollectionUtils;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -11,6 +12,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -67,28 +69,34 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findOne(Long userId) {
-        String sql="select id,username,password,salt,locked  from sys_users where id=?";
-//        List<com.hua.sys.entity.User> userList=jdbcTemplate.queryForList(sql,userId,com.hua.sys.entity.User.class);
-//        if (!CollectionUtils.isEmpty(userList)){
-//            return userList.get(0);
-//        }
-        return  null;
-
+        String sql = "select id,username,password,salt,locked  from sys_users where id=?";
+        List<User> userList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(User.class), userId);
+        if (!CollectionUtils.isEmpty(userList)) {
+            return userList.get(0);
+        }
+        return null;
     }
 
     @Override
     public User findByUsername(String username) {
+        String sql = "select id,usename,password,salt,locked from sys_users where username=?";
+        List<User> userList = jdbcTemplate.query(sql, new BeanPropertyRowMapper<User>(), username);
+        if (!CollectionUtils.isEmpty(userList)) {
+            return userList.get(0);
+        }
         return null;
     }
 
     @Override
     public Set<String> findRoles(String username) {
-        return null;
+        String sql = "select role from sys_users u, sys_roles r,sys_users_roles ur where u.username=? and u.id=ur.user_id and r.id=ur.role_id";
+        return new HashSet<>(jdbcTemplate.queryForList(sql, String.class, username));
     }
 
     @Override
     public Set<String> findPermisions(String username) {
-        return null;
+        String sql = "select permission from sys_users u, sys_roles r, sys_permissions p, sys_users_roles ur, sys_roles_permissions rp where u.username=? and u.id=ur.user_id and r.id=ur.role_id and r.id=rp.role_id and p.id=rp.permission_id";
+        return new HashSet(jdbcTemplate.queryForList(sql, String.class, username));
     }
 
     private boolean exists(Long userId, Long roleId) {
