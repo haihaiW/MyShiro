@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.zhongan:jobkeeper:1.0.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/zhongan/jobkeeper/1.0.0-SNAPSHOT/jobkeeper-1.0.0-20150707.091238-71.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/zhongan/jobkeeper/1.0.0-SNAPSHOT/jobkeeper-1.0.0-20150707.091238-71-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/zhongan/jobkeeper/1.0.0-SNAPSHOT/jobkeeper-1.0.0-20150707.091238-71-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
