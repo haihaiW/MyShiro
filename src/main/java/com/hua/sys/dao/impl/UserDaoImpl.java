@@ -68,6 +68,19 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public void uncorrelationRoles(Long userId, Long... roleIds) {
+        if(roleIds == null || roleIds.length == 0) {
+            return;
+        }
+        String sql = "delete from sys_users_roles where user_id=? and role_id=?";
+        for(Long roleId : roleIds) {
+            if(exists(userId, roleId)) {
+                jdbcTemplate.update(sql, userId, roleId);
+            }
+        }
+    }
+
+    @Override
     public User findOne(Long userId) {
         String sql = "select id,username,password,salt,locked  from sys_users where id=?";
         List<User> userList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(User.class), userId);
