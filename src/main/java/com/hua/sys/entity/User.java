@@ -20,6 +20,10 @@ public class User implements Serializable {
     private String salt;
     private Boolean locked = Boolean.FALSE;
 
+    public String getCredentialsSalt() {
+        return username + salt;
+    }
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;

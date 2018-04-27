@@ -10,13 +10,15 @@ import java.util.Set;
  * @Date :created in {time} {date}
  */
 public interface UserDao {
-    public User createUser(User user);
+    User createUser(User user);
 
-    public void updateUser(User user);
+    void updateUser(User user);
 
-    public void deleteUser(Long userId);
+    void deleteUser(Long userId);
 
-    public void correlationRoles(Long userId,Long ...roleIds);
+    void correlationRoles(Long userId, Long... roleIds);
+
+    void uncorrelationRoles(Long userId, Long... roleIds);
 
     User findOne(Long userId);
 

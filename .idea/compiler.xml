@@ -7,10 +7,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="MyShiro" />
+        <module name="rsasign" />
+        <module name="zat-mdp-core" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="MyShiro" target="1.7" />
+      <module name="rsasign" target="1.5" />
+      <module name="zat-mdp-core" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
