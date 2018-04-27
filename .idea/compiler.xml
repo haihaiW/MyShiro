@@ -13,6 +13,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="MyShiro" target="1.7" />
+      <module name="pepp_bfs" target="1.5" />
       <module name="rsasign" target="1.5" />
       <module name="zat-mdp-core" target="1.7" />
     </bytecodeTargetLevel>

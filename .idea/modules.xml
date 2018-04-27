@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MyShiro.iml" filepath="$PROJECT_DIR$/MyShiro.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../medical/rsasign/rsasign.iml" filepath="$PROJECT_DIR$/../../medical/rsasign/rsasign.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../medical/20180327_11980_3/zat-mdp-core.iml" filepath="$PROJECT_DIR$/../../medical/20180327_11980_3/zat-mdp-core.iml" />
     </modules>
   </component>
 </project>

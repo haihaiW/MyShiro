@@ -5,6 +5,7 @@ import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,17 +19,27 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
     private Ehcache passwordRetryCache;
 
     public RetryLimitHashedCredentialsMatcher() {
-        CacheManager cacheManager=CacheManager.newInstance(CacheManager.class.getClassLoader().getResource("ehcache.xml"));
-        passwordRetryCache=cacheManager.getCache("passwordRetryCache");
+        CacheManager cacheManager = CacheManager.newInstance(CacheManager.class.getClassLoader().getResource("ehcache.xml"));
+        passwordRetryCache = cacheManager.getCache("passwordRetryCache");
     }
 
     @Override
     public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
-        String username=(String)token.getPrincipal();
-        Element element=passwordRetryCache.get(username);
-        if (element==null){
-          //  passwordRetryCache.put(username,new AtomicInteger(0));
+        String username = (String) token.getPrincipal();
+        Element element = passwordRetryCache.get(username);
+        if (element == null) {
+            element = new Element(username, new AtomicInteger(0));
+            passwordRetryCache.put(element);
         }
-        return super.doCredentialsMatch(token, info);
+        AtomicInteger retryCount = (AtomicInteger) element.getObjectValue();
+        if (retryCount.incrementAndGet() > 5) {
+            //if retry count>5
+            throw new ExcessiveAttemptsException();
+        }
+        boolean matches = super.doCredentialsMatch(token, info);
+        if (matches) {
+            passwordRetryCache.remove(username);
+        }
+        return matches;
     }
 }
