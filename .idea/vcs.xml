@@ -2,6 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../../medical/20171107_11979_1" vcs="svn" />
-    <mapping directory="$PROJECT_DIR$/../../medical/20180327_11980_3" vcs="svn" />
-    <mapping directory="$PROJECT_DIR$/../../medical/2018
+  </component>
+</project>

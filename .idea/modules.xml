@@ -3,10 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MyShiro.iml" filepath="$PROJECT_DIR$/MyShiro.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../medical/rsasign/rsasign.iml" filepath="$PROJECT_DIR$/../../medical/rsasign/rsasign.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../medical/20180327_11980_3/zat-mdp-core.iml" filepath="$PROJECT_DIR$/../../medical/20180327_11980_3/zat-mdp-core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../medical/20180423_11506_1/zat-mdp-gw.iml" filepath="$PROJECT_DIR$/../../medical/20180423_11506_1/zat-mdp-gw.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../medical/20171107_11979_1/zat-mdp-utils.iml" filepath="$PROJECT_DIR$/../../medical/20171107_11979_1/zat-mdp-utils.iml" />
     </modules>
   </component>
 </project>
