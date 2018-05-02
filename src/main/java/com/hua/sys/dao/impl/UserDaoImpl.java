@@ -92,7 +92,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findByUsername(String username) {
-        String sql = "select id,usename,password,salt,locked from sys_users where username=?";
+        String sql = "select id,username,password,salt,locked from sys_users where username=?";
         List<User> userList = jdbcTemplate.query(sql, new BeanPropertyRowMapper<User>(), username);
         if (!CollectionUtils.isEmpty(userList)) {
             return userList.get(0);

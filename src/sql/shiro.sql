@@ -1,45 +1,79 @@
-drop table if exists sys_users;
-drop table if exists sys_roles;
-drop table if exists sys_permissions;
-drop table if exists sys_users_roles;
-drop table if exists sys_roles_permissions;
+DROP DATABASE IF EXISTS shiro;
 
-create table sys_users (
-  id bigint auto_increment,
-  username varchar(100),
-  password varchar(100),
-  salt varchar(100),
-  locked bool default false,
-  constraint pk_sys_users primary key(id)
-) charset=utf8 ENGINE=InnoDB;
-create unique index idx_sys_users_username on sys_users(username);
+CREATE DATABASE shiro;
+USE shiro;
 
-create table sys_roles (
-  id bigint auto_increment,
-  role varchar(100),
-  description varchar(100),
-  available bool default false,
-  constraint pk_sys_roles primary key(id)
-) charset=utf8 ENGINE=InnoDB;
-create unique index idx_sys_roles_role on sys_roles(role);
+CREATE TABLE users (
+  id BIGINT AUTO_INCREMENT,
+  username VARCHAR(100),
+  PASSWORD VARCHAR(100),
+  password_salt VARCHAR(100),
+  CONSTRAINT  PRIMARY KEY(id)
+) CHARSET=utf8 ENGINE=INNODB;
+CREATE UNIQUE INDEX  ON users(username);
 
-create table sys_permissions (
-  id bigint auto_increment,
-  permission varchar(100),
-  description varchar(100),
-  available bool default false,
-  constraint pk_sys_permissions primary key(id)
-) charset=utf8 ENGINE=InnoDB;
-create unique index idx_sys_permissions_permission on sys_permissions(permission);
+CREATE TABLE user_roles(
+  id BIGINT AUTO_INCREMENT,
+  username VARCHAR(100),
+  role_name VARCHAR(100),
+  CONSTRAINT  PRIMARY KEY(id)
+) CHARSET=utf8 ENGINE=INNODB;
+CREATE UNIQUE INDEX  ON user_roles(username, role_name);
 
-create table sys_users_roles (
-  user_id bigint,
-  role_id bigint,
-  constraint pk_sys_users_roles primary key(user_id, role_id)
-) charset=utf8 ENGINE=InnoDB;
+CREATE TABLE roles_permissions(
+  id BIGINT AUTO_INCREMENT,
+  role_name VARCHAR(100),
+  permission VARCHAR(100),
+  CONSTRAINT  PRIMARY KEY(id)
+) CHARSET=utf8 ENGINE=INNODB;
+CREATE UNIQUE INDEX idx_roles_permissions ON roles_permissions(role_name, permission);
 
-create table sys_roles_permissions (
-  role_id bigint,
-  permission_id bigint,
-  constraint pk_sys_roles_permissions primary key(role_id, permission_id)
-) charset=utf8 ENGINE=InnoDB;
+INSERT INTO users(username,PASSWORD)VALUES('zhang','123');
+INSERT INTO users(username,PASSWORD)VALUES('hai','123');
+
+DROP TABLE IF EXISTS sys_users;
+DROP TABLE IF EXISTS sys_roles;
+DROP TABLE IF EXISTS sys_permissions;
+DROP TABLE IF EXISTS sys_users_roles;
+DROP TABLE IF EXISTS sys_roles_permissions;
+
+CREATE TABLE sys_users (
+  id BIGINT AUTO_INCREMENT,
+  username VARCHAR(100),
+  PASSWORD VARCHAR(100),
+  salt VARCHAR(100),
+  locked BOOL DEFAULT FALSE,
+  CONSTRAINT  PRIMARY KEY(id)
+) CHARSET=utf8 ENGINE=INNODB;
+CREATE UNIQUE INDEX idx_sys_users_username ON sys_users(username);
+
+CREATE TABLE sys_roles (
+  id BIGINT AUTO_INCREMENT,
+  role VARCHAR(100),
+  description VARCHAR(100),
+  available BOOL DEFAULT FALSE,
+  CONSTRAINT pk_sys_roles PRIMARY KEY(id)
+) CHARSET=utf8 ENGINE=INNODB;
+CREATE UNIQUE INDEX idx_sys_roles_role ON sys_roles(role);
+
+CREATE TABLE sys_permissions (
+  id BIGINT AUTO_INCREMENT,
+  permission VARCHAR(100),
+  description VARCHAR(100),
+  available BOOL DEFAULT FALSE,
+  CONSTRAINT pk_sys_permissions PRIMARY KEY(id)
+) CHARSET=utf8 ENGINE=INNODB;
+CREATE UNIQUE INDEX idx_sys_permissions_permission ON sys_permissions(permission);
+
+CREATE TABLE sys_users_roles (
+  user_id BIGINT,
+  role_id BIGINT,
+  CONSTRAINT pk_sys_users_roles PRIMARY KEY(user_id, role_id)
+) CHARSET=utf8 ENGINE=INNODB;
+
+CREATE TABLE sys_roles_permissions (
+  role_id BIGINT,
+  permission_id BIGINT,
+  CONSTRAINT pk_sys_roles_permissions PRIMARY KEY(role_id, permission_id)
+) CHARSET=utf8 ENGINE=INNODB;
+
