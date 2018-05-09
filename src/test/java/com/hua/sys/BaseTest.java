@@ -9,6 +9,7 @@ import com.hua.sys.service.UserService;
 import com.hua.sys.service.impl.PermissionServiceImpl;
 import com.hua.sys.service.impl.RoleServiceImpl;
 import com.hua.sys.service.impl.UserServiceImpl;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.config.IniSecurityManagerFactory;
@@ -76,8 +77,8 @@ public abstract class BaseTest {
         u1=new User("zhang",password);
         u2=new User("li",password);
         u3=new User("hua",password);
+        u3.setLocked(Boolean.TRUE);
         u4=new User("hai",password);
-        u4.setLocked(Boolean.TRUE);
 
         userService.createUser(u1);
         userService.createUser(u2);
@@ -85,7 +86,7 @@ public abstract class BaseTest {
         userService.createUser(u4);
 
         //5.用户关联角色
-        userService.correlationRoles(u1.getId(),r1.getId());
+        userService.correlationRoles(u4.getId(),r1.getId());
     }
 
     @After

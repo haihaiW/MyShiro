@@ -7,14 +7,14 @@ import org.apache.shiro.util.CollectionUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by haihaiW
@@ -69,12 +69,12 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void uncorrelationRoles(Long userId, Long... roleIds) {
-        if(roleIds == null || roleIds.length == 0) {
+        if (roleIds == null || roleIds.length == 0) {
             return;
         }
         String sql = "delete from sys_users_roles where user_id=? and role_id=?";
-        for(Long roleId : roleIds) {
-            if(exists(userId, roleId)) {
+        for (Long roleId : roleIds) {
+            if (exists(userId, roleId)) {
                 jdbcTemplate.update(sql, userId, roleId);
             }
         }
@@ -92,13 +92,21 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findByUsername(String username) {
-        String sql = "select id,username,password,salt,locked from sys_users where username=?";
-        List<User> userList = jdbcTemplate.query(sql, new BeanPropertyRowMapper<User>(), username);
-        if (!CollectionUtils.isEmpty(userList)) {
-            return userList.get(0);
+        try {
+
+            String sql = "select id,username,password,salt,locked from sys_users where username=?";
+            List<User> userList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(User.class), username);
+            if (!CollectionUtils.isEmpty(userList)) {
+                return userList.get(0);
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
+
 
     @Override
     public Set<String> findRoles(String username) {

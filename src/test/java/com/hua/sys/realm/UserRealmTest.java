@@ -3,10 +3,11 @@ package com.hua.sys.realm;
 import com.hua.sys.BaseTest;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.junit.Assert;
 import org.junit.Test;
+
+import javax.security.auth.login.AccountLockedException;
 
 /**
  * Created by haihaiW
@@ -16,60 +17,58 @@ import org.junit.Test;
 public class UserRealmTest extends BaseTest {
 
     @Test
-    public void testLogin() {
-        login("classpath:shiro.ini", u1.getUsername(), password);
+    public void testLoginSuccessful() {
+        login("classpath:shiro.ini", "hai", "123");
         Assert.assertTrue(subject().isAuthenticated());
     }
 
+    /**
+     * 测试登录
+     * 账户错误
+     */
     @Test(expected = UnknownAccountException.class)
-    public void testLoginFailWithUnknownUsername() {
-        login("classpath:shiro.ini", u1.getUsername() + "", password);
-    }
-    @Test(expected = IncorrectCredentialsException.class)
-    public void testLoginFailWithErrorPassowrd() {
-        login("classpath:shiro.ini", u1.getUsername(), password + "1");
+    public void testLoginFailWithUnKnowUsername() {
+        login("classpath:shiro.ini", "haih", "123");
+        Assert.assertTrue(subject().isAuthenticated());
     }
 
-    @Test(expected = LockedAccountException.class)
+    @Test(expected = IncorrectCredentialsException.class)
+    public void testLoginFailWithErrorPassword() {
+        login("classpath:shiro.ini", "hai", "1234");
+        Assert.assertTrue(subject().isAuthenticated());
+    }
+
+    @Test(expected = AccountLockedException.class)
     public void testLoginFailWithLocked() {
-        login("classpath:shiro.ini", u4.getUsername(), password + "1");
+        login("classpath:shiro.ini", "hua", "123");
+        Assert.assertTrue(subject().isAuthenticated());
     }
 
     @Test(expected = ExcessiveAttemptsException.class)
     public void testLoginFailWithLimitRetryCount() {
-        for(int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 5; i++) {
             try {
-                login("classpath:shiro.ini", u3.getUsername(), password + "1");
-            } catch (Exception e) {/*ignore*/}
+                login("classpath:shiro.ini", "hai", "124");
+            } catch (Exception e) {
+            }
+            System.out.print("..........................................."+i+"\n");
         }
-        login("classpath:shiro.ini", u3.getUsername(), password + "1");
-
-        //需要清空缓存，否则后续的执行就会遇到问题(或者使用一个全新账户测试)
+        login("classpath:shiro.ini", "hai", "124");
     }
 
 
     @Test
-    public void testHasRole() {
-        login("classpath:shiro.ini", u1.getUsername(), password );
+    public void testHasRoel(){
+        login("classpath:shiro.ini","hai","123");
         Assert.assertTrue(subject().hasRole("admin"));
+        subject().checkRole("admin");
     }
 
     @Test
-    public void testNoRole() {
-        login("classpath:shiro.ini", u2.getUsername(), password);
-        Assert.assertFalse(subject().hasRole("admin"));
-    }
-
-    @Test
-    public void testHasPermission() {
-        login("classpath:shiro.ini", u1.getUsername(), password);
-        Assert.assertTrue(subject().isPermittedAll("user:create", "menu:create"));
-    }
-
-    @Test
-    public void testNoPermission() {
-        login("classpath:shiro.ini", u2.getUsername(), password);
-        Assert.assertFalse(subject().isPermitted("user:create"));
+    public void testHasPermission(){
+        login("classpath:shiro.ini","hai","123");
+        Assert.assertTrue(subject().isPermitted("user:create"));
+        Assert.assertTrue(subject().isPermittedAll("user:create","user:update","menu:create"));
     }
 
 }
